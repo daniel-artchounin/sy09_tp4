@@ -1,1 +1,11 @@
 *.pdf
+bcw.csv
+Pima.csv
+spam.csv
+Synth1-1000.txt
+Synth2-1000.txt
+Synth3-1000.txt
+mvdnorm.r
+prob.ad.R
+prob.log.R
+prob.log2.R
