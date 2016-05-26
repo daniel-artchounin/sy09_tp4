@@ -11,15 +11,18 @@ adl.app <- function(Xapp, zapp){
 
 		pik <- nk/n; # Proportion of individuals in this class
 		muk <- apply(Xk, 2, mean); # Estimation of mu for this class
-		sumVk <- sumVk + (nk - 1) * cov.wt(Xk, method='unbiased');
+		sumVk <- sumVk + (nk - 1) * cov.wt(Xk, method='unbiased')$cov;
 		# Here, we store the parameters of the k class
 		classK <- list()
 		classK$class <- k;
 		classK$nk <- nk;
 		classK$pik <- pik;
 		classK$muk <- muk;
-		parameters[[k+1]] <- classK;
+		parameters[[k]] <- classK;
 	}
-	parameters[[1]] <- sumVk/(n-g);
+	sigmaEstimator <- sumVk/(n-g);
+	for (k in 1:g){
+		parameters[[k]]$sigmak <- sigmaEstimator;
+	}
 	parameters;
 }
