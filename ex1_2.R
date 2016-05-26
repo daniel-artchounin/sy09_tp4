@@ -20,7 +20,7 @@ source('/ex1_1.R')
 # testée en comparant la norme de la différence entre deux estimations successives (q) et (q+1) au
 # seuil " (on pourra choisir " = 1e ?? 5).
 
-log.app{
+log.app  <- function(Xapp, zapp, intr, epsi){
 }
 
 log.val{
