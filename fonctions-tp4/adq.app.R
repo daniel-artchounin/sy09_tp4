@@ -5,7 +5,7 @@ adq.app <- function(Xapp, zapp){
 	for (k in 1:g){
 		# K class management
 		Xk <- Xapp[which( zapp==k ), ]; # We get the indivuals of this class
-		nk <- dim(Xk)[1]; # Number of individuals of this classn
+		nk <- dim(Xk)[1]; # Number of individuals of this class
 
 		pik <- nk/n; # Proportion of individuals in this class
 		muk <- apply(Xk, 2, mean); # Estimation of mu for this class

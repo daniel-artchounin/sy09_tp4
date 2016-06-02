@@ -8,7 +8,7 @@ ad.val <- function(parameters, Xtst){
 	aPosterioriProbabilities <- NULL;
 	for(k in 1:g){
 		densities[[k]] <- mvdnorm(Xtst, parameters[[k]]$muk, parameters[[k]]$sigmak);
-		sumDensities <- sumDensities + densities[[k]];
+		sumDensities <- sumDensities + parameters[[k]]$pik * densities[[k]];
 	}
 	for(k in 1:g){
 		if(k == 1){
@@ -18,17 +18,8 @@ ad.val <- function(parameters, Xtst){
 		}
 	}
 	predictions <- apply(aPosterioriProbabilities, 1, which.max);
-	probas <- apply(aPosterioriProbabilities, 1, max);
 	predictionsList <- list();
-	predictionsList$prob <- cbind(probas, as.matrix(predictions));
-	# print(predictionsList$prob)
-	# predictionsList;
+	predictionsList$prob <- aPosterioriProbabilities;
+	predictionsList$predictions <- predictions;
+	predictionsList;
 }
-
-# source('./adq.app.R')
-# source('./adl.app.R')
-# source('./nba.app.R')
-# data <- read.table('../donnees-tp4/yo_100.txt', header=F);
-# X <- data[, 1:2];
-# z <- data[, 3];
-# plot(ad.val(adq.app(X, z), X))
