@@ -1,8 +1,8 @@
 adl.app <- function(Xapp, zapp){
 	g <- max(zapp); # The number of classes
 	parameters <- list();
-	n <- dim(Xk)[1];
-	p <- dim(Xk)[2];
+	n <- dim(Xapp)[1];
+	p <- dim(Xapp)[2];
 	sumVk <- matrix(0, nrow=p, ncol=p);
 	for (k in 1:g){
 		# K class management
