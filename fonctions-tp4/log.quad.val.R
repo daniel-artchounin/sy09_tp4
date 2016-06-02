@@ -1,7 +1,7 @@
 source('./fonctions-tp4/computeQuadraticModel.R');
 
-log.quad.val <- function(Xtst, beta){
+log.quad.val <- function(beta, Xtst){
 	Xtst <- as.matrix(Xtst);
 	Xtst <- computeQuadraticModel(Xtst);
-	log.val(Xtst, beta);
+	log.val(beta, Xtst);
 }

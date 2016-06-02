@@ -8,8 +8,11 @@ source('./fonctions-tp4/log.val.R')
 source('./fonctions-tp4/log.quad.app.R')
 source('./fonctions-tp4/log.quad.val.R')
 source('./fonctions-tp4/separ1.R')
+source('./fonctions-tp4/prob.log.R')
+source('./fonctions-tp4/prob.log2.R')
 
-# Test
+
+# Data loading
 data <- read.table('./donnees-tp4/yo_100.txt', header=F);
 X <- data[, 1:2];
 z <- data[, 3];
@@ -19,18 +22,30 @@ Xtst <- data$Xtst;
 zapp <- data$zapp;
 ztst <- data$ztst;
 
+
 print('* Test 1 *');
 results <- log.app(Xapp, zapp, TRUE, 1e-5)
 print(results);
-results2 <- log.val(Xtst, results$beta);
+results2 <- log.val(results$beta, Xtst);
 print(results2);
 print(ztst);
 print(errorRate(results2$predictions, ztst));
 
+# Decision boundary
+pdf(file = "./images/ex1/logReg.pdf");
+prob.log(results$beta, Xtst, ztst, c(0.5));
+dev.off();
+
+
 print('* Test 2 *');
 results <- log.quad.app(Xapp, zapp, 1e-5)
 print(results);
-results2 <- log.quad.val(Xtst, results$beta);
+results2 <- log.quad.val(results$beta, Xtst);
 print(results2);
 print(ztst);
 print(errorRate(results2$predictions, ztst));
+
+# Decision boundary
+pdf(file = "./images/ex1/quadLogReg.pdf");
+prob.log2(results$beta, Xtst, ztst, c(0.5));
+dev.off();

@@ -1,4 +1,4 @@
-log.val <- function(Xtst, beta){
+log.val <- function(beta, Xtst){
 	Xtst <- as.matrix(Xtst);
 	n <- dim(Xtst)[1];
 	p <- dim(Xtst)[2];
