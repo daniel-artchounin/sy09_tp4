@@ -1,27 +1,43 @@
-source('/fonctions-tp4/mvdnorm.r')
-source('/fonctions-tp4/prob.ad.R')
-source('/fonctions-tp4/prob.log')
-source('/fonctions-tp4/prob.log2')
-source('/ex1_1.R')
-
-# On souhaite implémenter le modèle logistique binaire. On programmera tout d’abord deux fonctions,
-# l’une permettant de faire l’apprentissage du modèle (on utilisera l’algorithme de Newton-Raphson
-# présenté en cours), l’autre permettant d’appliquer le modèle obtenu sur un ensemble de données.
-# Apprentissage. La fonction log.app, permettant d’apprendre les paramètres du modèles, prendra
-# comme arguments d’entrée le tableau de données Xapp, le vecteur zapp des étiquettes associées, ainsi
-# qu’une variable binaire intr indiquant s’il faut ou non ajouter une ordonnée à l’origine (intercept) à
-# la matrice d’exemples et un scalaire epsi correspondant au seuil " en-deçà duquel on considère que
-# l’algorithme d’apprentissage a convergé.
-# Elle devra retourner la matrice beta correspondant à l’estimateur du maximum de vraisemblance
-# des paramètres, de dimensions p  1 (ou (p + 1)  1 si une ordonnée à l’origine a été ajoutée),
-# le nombre niter d’itérations effectuées par l’algorithme de Newton-Raphson, et la valeur logL de la
-# vraisemblance à l’optimum.
-# On pourra utiliser comme matrice de paramètres initiale (0) = (0; : : : ; 0)t. La convergence sera
-# testée en comparant la norme de la différence entre deux estimations successives (q) et (q+1) au
-# seuil " (on pourra choisir " = 1e ?? 5).
+source('./fonctions-tp4/cleanZ.R')
+source('./fonctions-tp4/pOmega1X.R')
+source('./fonctions-tp4/pOmega2X.R')
 
 log.app  <- function(Xapp, zapp, intr, epsi){
+	beta <- NULL; # Estimation of parameters 			
+	niter <- 0; # Number of iterations
+	logL <- NULL; # Log vraisemblance
+	Xapp <- as.matrix(Xapp);
+	n <- dim(Xapp)[1]; # Number of individuals
+	p <- dim(Xapp)[2]; # Number of caracteristics
+	t <- cleanZ(zapp);	
+	minusH <- NULL;
+	betaNew <- matrix(0, p, 1);
+	betaOld <- matrix(1, p, 1);
+	if(intr){ # We should add an intercept
+		Xapp <-cbind(matrix(1, n, 1), Xapp);
+		betaOld <- matrix(0, p+1, 1);
+		betaNew <- matrix(1, p+1, 1);
+	}	
+	while(norm(betaNew - betaOld, type="2") > epsi){
+		niter <- niter + 1;
+		betaOld <- betaNew;
+		minusH <- t(Xapp) %*% diag(diag(pOmega1X(Xapp, betaOld) %*% t(pOmega2X(Xapp, betaOld))))  %*% Xapp;
+		betaNew <- betaOld + solve(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));
+
+		print(norm(betaNew - betaOld, type="2")); # Test
+	}
+	results <- list()
+	results$beta <- betaNew;
+	results$niter <- niter;
+	results$logL <- t(Xapp) %*% (t - pOmega1X(Xapp, betaNew));
+	results;
 }
 
-log.val{
-}
+# Test
+data <- read.table('./donnees-tp4/yo_100.txt', header=F);
+X <- data[, 1:2];
+z <- data[, 3];
+print(log.app(X, z, TRUE, 1e-5))
+
+# log.val <- function(){
+# }

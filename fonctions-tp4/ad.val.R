@@ -29,3 +29,5 @@ data <- read.table('../donnees-tp4/yo_100.txt', header=F);
 X <- data[, 1:2];
 z <- data[, 3];
 plot(ad.val(adq.app(X, z), X))
+
+# Afficher les courbes de niveaux
