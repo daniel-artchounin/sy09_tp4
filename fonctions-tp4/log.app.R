@@ -1,3 +1,5 @@
+library(MASS)
+
 log.app  <- function(Xapp, zapp, intr, epsi){
 	beta <- NULL; # Estimation of parameters 			
 	niter <- 0; # Number of iterations
@@ -17,9 +19,13 @@ log.app  <- function(Xapp, zapp, intr, epsi){
 	while(norm(betaNew - betaOld, type="2") > epsi){
 		niter <- niter + 1;
 		betaOld <- betaNew;
-		minusH <- t(Xapp) %*% diag(diag(pOmega1X(Xapp, betaOld) %*% t(pOmega2X(Xapp, betaOld))))  %*% Xapp;
+		# print('no') # Test
+		# print(betaOld) # Test
+		# print(pOmega1X(Xapp, betaOld)) # Test
+		# print('no') # Test
+		minusH <- t(Xapp) %*% diag( diag( pOmega1X(Xapp, betaOld) %*% t(pOmega2X(Xapp, betaOld)) ) )  %*% Xapp;
 		betaNew <- betaOld + solve(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));
-
+		# betaNew <- betaOld + ginv(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld)); # Test
 		print(norm(betaNew - betaOld, type="2")); # Test
 	}
 	results <- list()

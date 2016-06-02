@@ -5,6 +5,8 @@ source('./fonctions-tp4/post.pr.R')
 source('./fonctions-tp4/errorRate.R')
 source('./fonctions-tp4/log.app.R')
 source('./fonctions-tp4/log.val.R')
+source('./fonctions-tp4/log.quad.app.R')
+source('./fonctions-tp4/log.quad.val.R')
 source('./fonctions-tp4/separ1.R')
 
 # Test
@@ -16,9 +18,19 @@ Xapp <- data$Xapp;
 Xtst <- data$Xtst;
 zapp <- data$zapp;
 ztst <- data$ztst;
+
+print('* Test 1 *');
 results <- log.app(Xapp, zapp, TRUE, 1e-5)
 print(results);
 results2 <- log.val(Xtst, results$beta);
+print(results2);
+print(ztst);
+print(errorRate(results2$predictions, ztst));
+
+print('* Test 2 *');
+results <- log.quad.app(Xapp, zapp, 1e-5)
+print(results);
+results2 <- log.quad.val(Xtst, results$beta);
 print(results2);
 print(ztst);
 print(errorRate(results2$predictions, ztst));
