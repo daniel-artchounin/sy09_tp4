@@ -30,7 +30,7 @@ log.app  <- function(Xapp, zapp, intr, epsi, pseudoInv=FALSE){
 		}else{
 			betaNew <- betaOld + solve(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));
 		}	
-		print(norm(betaNew - betaOld, type="2")); # Test
+		# print(norm(betaNew - betaOld, type="2")); # Test
 	}
 	results <- list()
 	results$beta <- betaNew;

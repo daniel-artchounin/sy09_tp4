@@ -1,3 +1,6 @@
+library(tree)
+
+
 source('./fonctions-tp4/getData.R');
 source('./fonctions-tp4/ad.val.R');
 source('./fonctions-tp4/adl.app.R');
@@ -16,13 +19,10 @@ source('./fonctions-tp4/pOmega2X.R');
 source('./fonctions-tp4/post.pr.R');
 
 
-# TO DO: implement decision trees !!!
-
-
 alpha <- 0.05;
 alphaDivBy2 <- alpha/2;
 oneMinusAlphaDivBy2 <- 1 - alphaDivBy2
-methods <- c("adq", "adl", "nba", "log", "quadLog");
+methods <- c("adq", "adl", "nba", "log", "quadLog", "binTree");
 results <- list();
 i <- 1;
 N <- 10;
@@ -34,8 +34,8 @@ errorRatesList <- NULL;
 print('yo'); # Test
 
 Donn <- read.csv("./donnees-tp4/spam.csv", header=T);
-X <- Donn[,2:58]
-z <- Donn[,59]
+X <- Donn[, 2:58]
+z <- Donn[, 59]
 
 # print(z) # Test
 
@@ -51,6 +51,7 @@ adlErrorRatesTst <- c();
 nbaErrorRatesTst <- c();
 logErrorRatesTst <- c();
 quadLogErrorRatesTst <- c();
+binTreeErrorRatesTst <- c();
 
 res <- princomp(X) # Calcul de l'ACP
 print(summary(res))
@@ -59,7 +60,7 @@ print(summary(res))
 # print(res$scores) # Composantes
 # print(res$sdev) # Valeurs propres
 
-X <- res$scores[,1:35];
+X <- res$scores[, 1:35];
 	
 # Diagramme en bâtons des valeurs propres
 plot(res, main='Diagramme en bâtons des valeurs propres')
@@ -78,6 +79,10 @@ for(j in 1:N){
 	paramsAppNba <- nba.app(Xapp, zapp);
 	paramsAppLog <- log.app(Xapp, zapp, TRUE, 1e-5, TRUE);
 	paramsAppQuadLog <- log.quad.app(Xapp, zapp, 1e-3, TRUE);
+	binTree <- tree(factor(zapp) ~ ., data=as.data.frame(cbind(Xapp, zapp)), control=tree.control(nobs=dim( Xapp )[1], mindev = 0.0001));
+	cvModel <- cv.tree(binTree);
+	bestSize <- cvModel$size[which(cvModel$dev==min(cvModel$dev))];
+	binTree2 <- prune.misclass(binTree, best=bestSize[length(bestSize)]);
 
 	print('yo'); # Test
 	predictionsAdq <- ad.val(paramsAppAdq, Xtst)$predictions;
@@ -85,6 +90,7 @@ for(j in 1:N){
 	predictionsNba <- ad.val(paramsAppNba, Xtst)$predictions;
 	predictionsLog <- log.val(paramsAppLog$beta, Xtst)$predictions;
 	predictionsQuadLog <- log.quad.val(paramsAppQuadLog$beta, Xtst)$predictions;
+	predictionsBinTree <- predict(binTree2, as.data.frame(Xtst), type = "class");
 
 	print('yo'); # Test
 	adqErrorRatesTst[j] <- errorRate(predictionsAdq, ztst);
@@ -92,6 +98,7 @@ for(j in 1:N){
 	nbaErrorRatesTst[j] <- errorRate(predictionsNba, ztst);
 	logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
 	quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst);
+	binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
 	print('yo'); # Test
 }
 
@@ -100,6 +107,7 @@ errorRatesList[[2]] <- adlErrorRatesTst;
 errorRatesList[[3]] <- nbaErrorRatesTst;
 errorRatesList[[4]] <- logErrorRatesTst;
 errorRatesList[[5]] <- quadLogErrorRatesTst;
+errorRatesList[[6]] <- binTreeErrorRatesTst;
 
 iterator <- 0;
 for(methodName in methods){
