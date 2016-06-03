@@ -29,8 +29,6 @@ methods <- c("adq", "adl", "nba", "log", "binTree");
 results <- list();
 i <- 1;
 N <- 100;
-XAll <- NULL;
-zAll <- NULL;
 iterator <- 0;
 errorRatesList <- NULL;
 
@@ -48,6 +46,12 @@ adlErrorRatesTst <- c();
 nbaErrorRatesTst <- c();
 logErrorRatesTst <- c();
 binTreeErrorRatesTst <- c();
+
+# Plot of the dataset
+pdf(file = "images/ex2/bcw.pdf");
+plot(X, col=c("darkorchid","firebrick","darkcyan","darkolivegreen","orange","black","red")[z]);
+dev.off();
+
 for(j in 1:N){
 	donn.sep <- separ1(X, z);
 	Xapp <- donn.sep$Xapp;
@@ -76,6 +80,14 @@ for(j in 1:N){
 	nbaErrorRatesTst[j] <- errorRate(predictionsNba, ztst);
 	logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
 	binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
+
+	if(j == 1){
+		imageName <- paste ("images/ex2/bcw_bin_tree.pdf", sep="");
+		pdf(file = imageName);
+		plot(binTree2);
+		text(binTree2, cex=0.75);
+		dev.off();
+	}
 }
 errorRatesList[[1]] <- adqErrorRatesTst;
 errorRatesList[[2]] <- adlErrorRatesTst;

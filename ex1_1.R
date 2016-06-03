@@ -1,10 +1,10 @@
-source('./fonctions-tp4/mvdnorm.r')
-source('./fonctions-tp4/prob.ad.R')
-source('./fonctions-tp4/ad.val.R')
-source('./fonctions-tp4/adl.app.R')
-source('./fonctions-tp4/adq.app.R')
-source('./fonctions-tp4/nba.app.R')
-source('./fonctions-tp4/separ1.R')
+source('./fonctions-tp4/mvdnorm.r');
+source('./fonctions-tp4/prob.ad.R');
+source('./fonctions-tp4/ad.val.R');
+source('./fonctions-tp4/adl.app.R');
+source('./fonctions-tp4/adq.app.R');
+source('./fonctions-tp4/nba.app.R');
+source('./fonctions-tp4/separ1.R');
 library(MASS)
 
 

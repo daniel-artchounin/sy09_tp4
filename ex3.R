@@ -1,4 +1,4 @@
-library(tree)
+library(tree);
 
 
 source('./fonctions-tp4/getData.R');
@@ -17,6 +17,9 @@ source('./fonctions-tp4/cleanZ.R');
 source('./fonctions-tp4/pOmega1X.R');
 source('./fonctions-tp4/pOmega2X.R');
 source('./fonctions-tp4/post.pr.R');
+
+
+# Should we also estimate pik, muk and sigmak ???
 
 
 alpha <- 0.05;
@@ -63,7 +66,9 @@ print(summary(res))
 X <- res$scores[, 1:35];
 	
 # Diagramme en bâtons des valeurs propres
-plot(res, main='Diagramme en bâtons des valeurs propres')
+pdf("./images/ex2/spam_batons_valeurs_propres.pdf");
+plot(res, main='Diagramme en bâtons des valeurs propres');
+dev.off()
 
 for(j in 1:N){
 	donn.sep <- separ1(X, z);
@@ -100,6 +105,14 @@ for(j in 1:N){
 	quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst);
 	binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
 	print('yo'); # Test
+
+	if(j == 1){
+		imageName <- paste ("images/ex2/spam_bin_tree.pdf", sep="");
+		pdf(file = imageName);
+		plot(binTree2);
+		text(binTree2, cex=0.75);
+		dev.off();
+	}
 }
 
 errorRatesList[[1]] <- adqErrorRatesTst;

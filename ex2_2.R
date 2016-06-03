@@ -17,6 +17,7 @@ source('./fonctions-tp4/cleanZ.R');
 source('./fonctions-tp4/pOmega1X.R');
 source('./fonctions-tp4/pOmega2X.R');
 source('./fonctions-tp4/post.pr.R');
+source('./fonctions-tp4/prob.ad.R');
 
 
 # Should we also estimate pik, muk and sigmak ???
@@ -49,6 +50,12 @@ nbaErrorRatesTst <- c();
 logErrorRatesTst <- c();
 quadLogErrorRatesTst <- c();
 binTreeErrorRatesTst <- c();
+
+# Plot of the dataset
+pdf(file = "images/ex2/pima.pdf");
+plot(X, col=c("darkorchid","firebrick","darkcyan","darkolivegreen","orange","black","red")[z]);
+dev.off();
+
 for(j in 1:N){
 	donn.sep <- separ1(X, z);
 	Xapp <- donn.sep$Xapp;
@@ -80,6 +87,14 @@ for(j in 1:N){
 	logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
 	quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst);
 	binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
+
+	if(j == 1){
+		imageName <- paste ("images/ex2/pima_bin_tree.pdf", sep="");
+		pdf(file = imageName);
+		plot(binTree2);
+		text(binTree2, cex=0.75);
+		dev.off();
+	}
 }
 errorRatesList[[1]] <- adqErrorRatesTst;
 errorRatesList[[2]] <- adlErrorRatesTst;

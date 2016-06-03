@@ -1,4 +1,4 @@
-library(tree)
+library(tree);
 
 
 source('./fonctions-tp4/getData.R');
@@ -18,6 +18,9 @@ source('./fonctions-tp4/pOmega1X.R');
 source('./fonctions-tp4/pOmega2X.R');
 source('./fonctions-tp4/post.pr.R');
 source('./fonctions-tp4/estimationOfMusAndSigmas.R');
+source('./fonctions-tp4/prob.ad.R');
+source('./fonctions-tp4/prob.log.R');
+source('./fonctions-tp4/prob.log2.R');
 
 
 alpha <- 0.05;
@@ -34,6 +37,13 @@ for(fileName in filesNames){
 	data <- getData(fileName);
 	X <- data[[1]];
 	z <- data[[2]];
+
+	# Plot of each dataset
+	imageName <- paste ("images/ex2/synth_", i, "_1000.pdf", sep="");
+	pdf(file = imageName);
+	plot(X, col=c("darkorchid","firebrick","darkcyan","darkolivegreen","orange")[z]);
+	dev.off();	
+
 	tmpList <- NULL
 	adqTmpList <- NULL
 	adlTmpList <- NULL
@@ -77,6 +87,44 @@ for(fileName in filesNames){
 		logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
 		quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst);
 		binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
+		if(j == 1){
+			imageName <- paste ("images/ex2/synth_", i, "_adq_1000.pdf", sep="");
+			pdf(file = imageName);
+			prob.ad(paramsAppAdq, Xtst, ztst, c(0.5));
+			dev.off();	
+
+			imageName <- paste ("images/ex2/synth_", i, "_adl_1000.pdf", sep="");
+			pdf(file = imageName);
+			prob.ad(paramsAppAdl, Xtst, ztst, c(0.5));
+			dev.off();	
+
+			imageName <- paste ("images/ex2/synth_", i, "_nba_1000.pdf", sep="");
+			pdf(file = imageName);
+			prob.ad(paramsAppNba, Xtst, ztst, c(0.5));
+			dev.off();	
+
+			imageName <- paste ("images/ex2/synth_", i, "_log_1000.pdf", sep="");
+			pdf(file = imageName);
+			prob.log(paramsAppLog$beta, Xtst, ztst, c(0.5));
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_quad_log_1000.pdf", sep="");
+			pdf(file = imageName);
+			prob.log2(paramsAppQuadLog$beta, Xtst, ztst, c(0.5));
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_bin_tree_1000.pdf", sep="");
+			pdf(file = imageName);
+			plot(binTree2);
+			text(binTree2, cex=0.75);
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_bin_partition_1000.pdf", sep="");
+			pdf(file = imageName);
+			plot(Xtst, col=c("darkorchid","firebrick","darkcyan","darkolivegreen","orange")[ztst])
+			partition.tree(binTree2, ordvars=c("V1","V2"), add=TRUE)			
+			dev.off();
+		}
 	}
 	errorRatesList[[1]] <- adqErrorRatesTst;
 	errorRatesList[[2]] <- adlErrorRatesTst;
