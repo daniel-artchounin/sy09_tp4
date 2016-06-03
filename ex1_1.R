@@ -19,7 +19,7 @@ zapp <- data$zapp;
 ztst <- data$ztst;
 
 # Parameters of the models
-paramsuAppAdq <- adq.app(Xapp, zapp)
+paramsAppAdq <- adq.app(Xapp, zapp)
 paramsAppAdl <- adl.app(Xapp, zapp)
 paramsAppNba <- nba.app(Xapp, zapp)
 
@@ -41,13 +41,13 @@ dev.off();
 
 # Decision boundaries
 pdf(file = "./images/ex1/ctstAdq.pdf");
-prob.ad(MuAppAdq, Xtst, ztst, c(0.5));
+prob.ad(paramsAppAdq, Xtst, ztst, c(0.5));
 dev.off();
 
 pdf(file = "./images/ex1/ctstAdl.pdf");
-prob.ad(MuAppAdl, Xtst, ztst, c(0.5));
+prob.ad(paramsAppAdl, Xtst, ztst, c(0.5));
 dev.off();
 
 pdf(file = "./images/ex1/ctstNba.pdf");
-prob.ad(MuAppNba, Xtst, ztst, c(0.5));
+prob.ad(paramsAppNba, Xtst, ztst, c(0.5));
 dev.off();

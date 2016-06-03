@@ -1,6 +1,7 @@
 library(MASS)
 
-log.app  <- function(Xapp, zapp, intr, epsi){
+
+log.app  <- function(Xapp, zapp, intr, epsi, pseudoInv=FALSE){
 	beta <- NULL; # Estimation of parameters 			
 	niter <- 0; # Number of iterations
 	logL <- NULL; # Log vraisemblance
@@ -24,8 +25,11 @@ log.app  <- function(Xapp, zapp, intr, epsi){
 		# print(pOmega1X(Xapp, betaOld)) # Test
 		# print('no') # Test
 		minusH <- t(Xapp) %*% diag( diag( pOmega1X(Xapp, betaOld) %*% t(pOmega2X(Xapp, betaOld)) ) )  %*% Xapp;
-		betaNew <- betaOld + solve(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));
-		# betaNew <- betaOld + ginv(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld)); # Test
+		if(pseudoInv){
+			betaNew <- betaOld + ginv(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));
+		}else{
+			betaNew <- betaOld + solve(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));
+		}	
 		print(norm(betaNew - betaOld, type="2")); # Test
 	}
 	results <- list()
