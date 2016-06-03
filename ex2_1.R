@@ -27,16 +27,12 @@ methods <- c("adq", "adl", "nba", "log", "quadLog");
 results <- list();
 i <- 1;
 N <- 20;
-XAll <- NULL;
-zAll <- NULL;
 iterator <- 0;
 errorRatesList <- NULL;
 for(fileName in filesNames){
 	data <- getData(fileName);
 	X <- data[[1]];
-	XAll <- rbind(XAll, X);
 	z <- data[[2]];
-	zAll <- c(zAll, z);
 	tmpList <- NULL
 	adqTmpList <- NULL
 	adlTmpList <- NULL
