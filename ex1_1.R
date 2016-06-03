@@ -19,22 +19,22 @@ zapp <- data$zapp;
 ztst <- data$ztst;
 
 # Parameters of the models
-MuAppAdq <- adq.app(Xapp, zapp)
-MuAppAdl <- adl.app(Xapp, zapp)
-MuAppNba <- nba.app(Xapp, zapp)
+paramsuAppAdq <- adq.app(Xapp, zapp)
+paramsAppAdl <- adl.app(Xapp, zapp)
+paramsAppNba <- nba.app(Xapp, zapp)
 
 # Predictions
-probTstAdq <- ad.val(MuAppAdq, Xtst)
+probTstAdq <- ad.val(paramsAppAdq, Xtst)
 pdf(file = "./images/ex1/probTstAdq.pdf");
 plot(probTstAdq$predictions);
 dev.off();
 
-probTstAdl <- ad.val(MuAppAdl, Xtst)
+probTstAdl <- ad.val(paramsAppAdl, Xtst)
 pdf(file = "./images/ex1/probTstAdl.pdf");
 plot(probTstAdl$predictions);
 dev.off();
 
-probTstNba <- ad.val(MuAppNba, Xtst)
+probTstNba <- ad.val(paramsAppNba, Xtst)
 pdf(file = "./images/ex1/probTstNba.pdf");
 plot(probTstNba$predictions);
 dev.off();

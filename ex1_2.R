@@ -1,15 +1,15 @@
-source('./fonctions-tp4/cleanZ.R')
-source('./fonctions-tp4/pOmega1X.R')
-source('./fonctions-tp4/pOmega2X.R')
-source('./fonctions-tp4/post.pr.R')
-source('./fonctions-tp4/errorRate.R')
-source('./fonctions-tp4/log.app.R')
-source('./fonctions-tp4/log.val.R')
-source('./fonctions-tp4/log.quad.app.R')
-source('./fonctions-tp4/log.quad.val.R')
-source('./fonctions-tp4/separ1.R')
-source('./fonctions-tp4/prob.log.R')
-source('./fonctions-tp4/prob.log2.R')
+source('./fonctions-tp4/cleanZ.R');
+source('./fonctions-tp4/pOmega1X.R');
+source('./fonctions-tp4/pOmega2X.R');
+source('./fonctions-tp4/post.pr.R');
+source('./fonctions-tp4/errorRate.R');
+source('./fonctions-tp4/log.app.R');
+source('./fonctions-tp4/log.val.R');
+source('./fonctions-tp4/log.quad.app.R');
+source('./fonctions-tp4/log.quad.val.R');
+source('./fonctions-tp4/separ1.R');
+source('./fonctions-tp4/prob.log.R');
+source('./fonctions-tp4/prob.log2.R');
 
 
 # Data loading
