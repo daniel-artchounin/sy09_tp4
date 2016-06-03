@@ -13,8 +13,8 @@ log.app  <- function(Xapp, zapp, intr, epsi){
 	betaOld <- matrix(1, p, 1);
 	if(intr){ # We should add an intercept
 		Xapp <-cbind(matrix(1, n, 1), Xapp);
-		betaOld <- matrix(0, p+1, 1);
-		betaNew <- matrix(1, p+1, 1);
+		betaOld <- matrix(1, p+1, 1);
+		betaNew <- matrix(0, p+1, 1);
 	}	
 	while(norm(betaNew - betaOld, type="2") > epsi){
 		niter <- niter + 1;
