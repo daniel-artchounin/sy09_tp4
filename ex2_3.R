@@ -18,13 +18,11 @@ source('./fonctions-tp4/post.pr.R');
 
 # Should we also estimate pik, muk and sigmak ???
 # TO DO: implement decision trees !!!
-# TO DO: implement logistic regression !!!
 
 alpha <- 0.05;
 alphaDivBy2 <- alpha/2;
 oneMinusAlphaDivBy2 <- 1 - alphaDivBy2
-# methods <- c("adq", "adl", "nba", "log");
-methods <- c("adq", "adl", "nba");
+methods <- c("adq", "adl", "nba", "log");
 results <- list();
 i <- 1;
 N <- 100;
@@ -57,22 +55,22 @@ for(j in 1:N){
 	paramsAppAdq <- adq.app(Xapp, zapp);
 	paramsAppAdl <- adl.app(Xapp, zapp);
 	paramsAppNba <- nba.app(Xapp, zapp);
-	# paramsAppLog <- log.app(Xapp, zapp, TRUE, 1e-5);
+	paramsAppLog <- log.app(Xapp, zapp, TRUE, 1e-5);
 
 	predictionsAdq <- ad.val(paramsAppAdq, Xtst)$predictions;
 	predictionsAdl <- ad.val(paramsAppAdl, Xtst)$predictions;
 	predictionsNba <- ad.val(paramsAppNba, Xtst)$predictions;
-	# predictionsLog <- log.val(paramsAppLog$beta, Xtst)$predictions;
+	predictionsLog <- log.val(paramsAppLog$beta, Xtst)$predictions;
 
 	adqErrorRatesTst[j] <- errorRate(predictionsAdq, ztst);
 	adlErrorRatesTst[j] <- errorRate(predictionsAdl, ztst);
 	nbaErrorRatesTst[j] <- errorRate(predictionsNba, ztst);
-	# logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
+	logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
 }
 errorRatesList[[1]] <- adqErrorRatesTst;
 errorRatesList[[2]] <- adlErrorRatesTst;
 errorRatesList[[3]] <- nbaErrorRatesTst;
-# errorRatesList[[4]] <- logErrorRatesTst;
+errorRatesList[[4]] <- logErrorRatesTst;
 iterator <- 0;
 for(methodName in methods){
 	iterator <- iterator + 1;
