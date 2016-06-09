@@ -1,5 +1,5 @@
 library(tree);
-
+library(MASS);
 
 source('./fonctions-tp4/getData.R');
 source('./fonctions-tp4/ad.val.R');
@@ -22,7 +22,6 @@ source('./fonctions-tp4/prob.ad.R');
 source('./fonctions-tp4/prob.log.R');
 source('./fonctions-tp4/prob.log2.R');
 
-
 alpha <- 0.05;
 alphaDivBy2 <- alpha/2;
 oneMinusAlphaDivBy2 <- 1 - alphaDivBy2
@@ -34,10 +33,11 @@ N <- 20;
 iterator <- 0;
 errorRatesList <- NULL;
 for(fileName in filesNames){
+	print(fileName);
 	data <- getData(fileName);
 	X <- data[[1]];
 	z <- data[[2]];
-
+	
 	# Plot of each dataset
 	imageName <- paste ("images/ex2/synth_", i, "_1000.pdf", sep="");
 	pdf(file = imageName);
@@ -71,7 +71,7 @@ for(fileName in filesNames){
 		paramsAppQuadLog <- log.quad.app(Xapp, zapp, 1e-5);
 		binTree <- tree(factor(zapp) ~ ., data=cbind(Xapp, zapp), control=tree.control(nobs=dim( Xapp )[1], mindev = 0.0001));
 		cvModel <- cv.tree(binTree);
-		bestSize <- cvModel$size[which(cvModel$dev==min(cvModel$dev))];
+		bestSize <- cvModel$size[which(cvModel$dev==max(cvModel$dev))];
 		binTree2 <- prune.misclass(binTree, best=bestSize[length(bestSize)]);
 
 		predictionsAdq <- ad.val(paramsAppAdq, Xtst)$predictions;
