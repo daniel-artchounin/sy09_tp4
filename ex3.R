@@ -86,7 +86,7 @@ for(j in 1:N){
 	paramsAppQuadLog <- log.quad.app(Xapp, zapp, 1e-3, TRUE);
 	binTree <- tree(factor(zapp) ~ ., data=as.data.frame(cbind(Xapp, zapp)), control=tree.control(nobs=dim( Xapp )[1], mindev = 0.0001));
 	cvModel <- cv.tree(binTree);
-	bestSize <- cvModel$size[which(cvModel$dev==min(cvModel$dev))];
+	bestSize <- cvModel$size[which(cvModel$dev==max(cvModel$dev))];
 	binTree2 <- prune.misclass(binTree, best=bestSize[length(bestSize)]);
 
 	print('yo'); # Test
