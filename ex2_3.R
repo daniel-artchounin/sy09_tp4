@@ -66,7 +66,7 @@ for(j in 1:N){
 	paramsAppLog <- log.app(Xapp, zapp, TRUE, 1e-5);
 	binTree <- tree(factor(zapp) ~ ., data=cbind(Xapp, zapp), control=tree.control(nobs=dim( Xapp )[1], mindev = 0.0001));
 	cvModel <- cv.tree(binTree);
-	bestSize <- cvModel$size[which(cvModel$dev==max(cvModel$dev))];
+	bestSize <- cvModel$size[which(cvModel$dev==min(cvModel$dev))];
 	binTree2 <- prune.misclass(binTree, best=bestSize[length(bestSize)]);
 
 	predictionsAdq <- ad.val(paramsAppAdq, Xtst)$predictions;

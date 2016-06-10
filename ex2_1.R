@@ -26,7 +26,7 @@ alpha <- 0.05;
 alphaDivBy2 <- alpha/2;
 oneMinusAlphaDivBy2 <- 1 - alphaDivBy2
 filesNames <- c("donnees-tp4/Synth1-1000.txt", "donnees-tp4/Synth2-1000.txt", "donnees-tp4/Synth3-1000.txt");
-methods <- c("adq", "adl", "nba", "log", "quadLog", "binTree");
+methods <- c("adq", "adl", "nba", "logWithoutIntercept", "logWithIntercept", "quadLog", "binTree");
 results <- list();
 i <- 1;
 N <- 20;
@@ -53,7 +53,8 @@ for(fileName in filesNames){
 	adqErrorRatesTst <- c();
 	adlErrorRatesTst <- c();
 	nbaErrorRatesTst <- c();
-	logErrorRatesTst <- c();
+	logWithoutInterceptErrorRatesTst <- c();
+	logWithInterceptErrorRatesTst <- c();
 	quadLogErrorRatesTst <- c();
 	binTreeErrorRatesTst <- c();
 	for(j in 1:N){
@@ -67,25 +68,29 @@ for(fileName in filesNames){
 		paramsAppAdq <- adq.app(Xapp, zapp);
 		paramsAppAdl <- adl.app(Xapp, zapp);
 		paramsAppNba <- nba.app(Xapp, zapp);
-		paramsAppLog <- log.app(Xapp, zapp, TRUE, 1e-5);
+		paramsAppLogWithoutIntercept <- log.app(Xapp, zapp, FALSE, 1e-5);
+		paramsAppLogWithIntercept <- log.app(Xapp, zapp, TRUE, 1e-5);
 		paramsAppQuadLog <- log.quad.app(Xapp, zapp, 1e-5);
+		
 		binTree <- tree(factor(zapp) ~ ., data=cbind(Xapp, zapp), control=tree.control(nobs=dim( Xapp )[1], mindev = 0.0001));
 		cvModel <- cv.tree(binTree);
-		bestSize <- cvModel$size[which(cvModel$dev==max(cvModel$dev))];
+		bestSize <- cvModel$size[which(cvModel$dev==min(cvModel$dev))];
 		binTree2 <- prune.misclass(binTree, best=bestSize[length(bestSize)]);
 
 		predictionsAdq <- ad.val(paramsAppAdq, Xtst)$predictions;
 		predictionsAdl <- ad.val(paramsAppAdl, Xtst)$predictions;
 		predictionsNba <- ad.val(paramsAppNba, Xtst)$predictions;
-		predictionsLog <- log.val(paramsAppLog$beta, Xtst)$predictions;
+		predictionsLogWithoutIntercept <- log.val(paramsAppLogWithoutIntercept$beta, Xtst)$predictions;
+		predictionsLogWithIntercept <- log.val(paramsAppLogWithIntercept$beta, Xtst)$predictions;
 		predictionsQuadLog <- log.quad.val(paramsAppQuadLog$beta, Xtst)$predictions;
 		predictionsBinTree <- predict(binTree2, Xtst, type = "class");
 		
 		adqErrorRatesTst[j] <- errorRate(predictionsAdq, ztst);
 		adlErrorRatesTst[j] <- errorRate(predictionsAdl, ztst);
 		nbaErrorRatesTst[j] <- errorRate(predictionsNba, ztst);
-		logErrorRatesTst[j] <- errorRate(predictionsLog, ztst);
-		quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst);
+		logWithoutInterceptErrorRatesTst[j] <- errorRate(predictionsLogWithoutIntercept, ztst);
+		logWithInterceptErrorRatesTst[j] <- errorRate(predictionsLogWithIntercept, ztst);
+		quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst)
 		binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
 		if(j == 1){
 			imageName <- paste ("images/ex2/synth_", i, "_adq_1000.pdf", sep="");
@@ -103,9 +108,14 @@ for(fileName in filesNames){
 			prob.ad(paramsAppNba, Xtst, ztst, c(0.5));
 			dev.off();	
 
-			imageName <- paste ("images/ex2/synth_", i, "_log_1000.pdf", sep="");
+			imageName <- paste ("images/ex2/synth_", i, "_log_without_intercept_1000.pdf", sep="");
 			pdf(file = imageName);
-			prob.log(paramsAppLog$beta, Xtst, ztst, c(0.5));
+			prob.log(paramsAppLogWithoutIntercept$beta, Xtst, ztst, c(0.5));
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_log_with_intercept_1000.pdf", sep="");
+			pdf(file = imageName);
+			prob.log(paramsAppLogWithIntercept$beta, Xtst, ztst, c(0.5));
 			dev.off();
 
 			imageName <- paste ("images/ex2/synth_", i, "_quad_log_1000.pdf", sep="");
@@ -129,9 +139,10 @@ for(fileName in filesNames){
 	errorRatesList[[1]] <- adqErrorRatesTst;
 	errorRatesList[[2]] <- adlErrorRatesTst;
 	errorRatesList[[3]] <- nbaErrorRatesTst;
-	errorRatesList[[4]] <- logErrorRatesTst;
-	errorRatesList[[5]] <- quadLogErrorRatesTst;
-	errorRatesList[[6]] <- binTreeErrorRatesTst;
+	errorRatesList[[4]] <- logWithoutInterceptErrorRatesTst;
+	errorRatesList[[5]] <- logWithInterceptErrorRatesTst;
+	errorRatesList[[6]] <- quadLogErrorRatesTst;
+	errorRatesList[[7]] <- binTreeErrorRatesTst;
 	iterator <- 0;
 	results[[i]] <- list();
 	results[[i]]$param <- estimationOfMusAndSigmas(X, z);
