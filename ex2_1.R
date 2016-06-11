@@ -37,6 +37,16 @@ for(fileName in filesNames){
 	data <- getData(fileName);
 	X <- data[[1]];
 	z <- data[[2]];
+
+	print("*** Synthi data set ***");
+	print("X summary:")
+	print(summary(X))
+	print("z summary:")
+	print(table(z))
+	print("Data set size:")
+	print(dim(X)[1])
+	print("Number of explicative variables:")
+	print(dim(X)[2])
 	
 	# Plot of each dataset
 	imageName <- paste ("images/ex2/synth_", i, "_1000.pdf", sep="");

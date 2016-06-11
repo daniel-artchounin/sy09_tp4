@@ -52,6 +52,16 @@ logWithInterceptErrorRatesTst <- c();
 quadLogErrorRatesTst <- c();
 binTreeErrorRatesTst <- c();
 
+print("*** Pima data set ***");
+print("X summary:");
+print(summary(X));
+print("z summary:");
+print(table(z));
+print("Data set size:");
+print(dim(X)[1]);
+print("Number of explicative variables:");
+print(dim(X)[2]);
+
 # Plot of the dataset
 pdf(file = "images/ex2/pima.pdf");
 plot(X, col=c("darkorchid","firebrick","darkcyan","darkolivegreen","orange","black","red")[z]);

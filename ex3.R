@@ -40,6 +40,17 @@ Donn <- read.csv("./donnees-tp4/spam.csv", header=T);
 X <- Donn[, 2:58]
 z <- Donn[, 59]
 
+print("*** spam data set ***");
+print("X summary:")
+print(summary(X))
+print("z summary:")
+print(table(z))
+print("Data set size:")
+print(dim(X)[1])
+print("Number of explicative variables:")
+print(dim(X)[2])
+
+
 # print(z) # Test
 
 print('yo'); # Test
@@ -65,6 +76,16 @@ print(summary(res))
 # print(res$sdev) # Valeurs propres
 
 X <- res$scores[, 1:35];
+
+print("*** spam data set (after PCA) ***");
+print("X summary:")
+print(summary(X))
+print("z summary:")
+print(table(z))
+print("Data set size:")
+print(dim(X)[1])
+print("Number of explicative variables:")
+print(dim(X)[2])
 	
 # Diagramme en bâtons des valeurs propres
 pdf("./images/ex2/spam_batons_valeurs_propres.pdf");
