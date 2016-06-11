@@ -20,10 +20,6 @@ log.app  <- function(Xapp, zapp, intr, epsi, pseudoInv=FALSE){
 	while(norm(betaNew - betaOld, type="2") > epsi){
 		niter <- niter + 1;
 		betaOld <- betaNew;
-		# print('no') # Test
-		# print(betaOld) # Test
-		# print(pOmega1X(Xapp, betaOld)) # Test
-		# print('no') # Test
 		minusH <- t(Xapp) %*% diag( diag( pOmega1X(Xapp, betaOld) %*% t(pOmega2X(Xapp, betaOld)) ) )  %*% Xapp;
 		if(pseudoInv){
 			betaNew <- betaOld + ginv(minusH) %*% t(Xapp) %*% (t - pOmega1X(Xapp, betaOld));

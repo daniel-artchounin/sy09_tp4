@@ -22,7 +22,6 @@ Xtst <- data$Xtst;
 zapp <- data$zapp;
 ztst <- data$ztst;
 
-
 print('* Test 1 *');
 print('- Régression linéaire (sans intercept) -');
 results1 <- log.app(Xapp, zapp, FALSE, 1e-5, TRUE)

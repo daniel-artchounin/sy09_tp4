@@ -27,14 +27,11 @@ alphaDivBy2 <- alpha/2;
 oneMinusAlphaDivBy2 <- 1 - alphaDivBy2
 methods <- c("adq", "adl", "nba", "logWithoutIntercept", "logWithIntercept", "quadLog", "binTree");
 results <- list();
-i <- 1;
 N <- 10;
-XAll <- NULL;
-zAll <- NULL;
 iterator <- 0;
 errorRatesList <- NULL;
 
-print('yo'); # Test
+print('...'); # Test
 
 Donn <- read.csv("./donnees-tp4/spam.csv", header=T);
 X <- Donn[, 2:58]
@@ -50,10 +47,9 @@ print(dim(X)[1])
 print("Number of explicative variables:")
 print(dim(X)[2])
 
-
 # print(z) # Test
 
-print('yo'); # Test
+print('...'); # Test
 
 tmpList <- NULL
 adqTmpList <- NULL
@@ -68,12 +64,12 @@ logWithInterceptErrorRatesTst <- c();
 quadLogErrorRatesTst <- c();
 binTreeErrorRatesTst <- c();
 
-res <- princomp(X) # Calcul de l'ACP
+res <- princomp(X) # Computation of the PCA
 print(summary(res))
 print((res$sdev)^2) # L
-# print(res$loadings) # Vecteurs propres
-# print(res$scores) # Composantes
-print(res$sdev) # Valeurs propres
+# print(res$loadings) # Eigen vectors
+# print(res$scores) # Principal components
+print(res$sdev) # Eigen values
 
 X <- res$scores[, 1:10];
 
@@ -94,14 +90,14 @@ dev.off()
 
 # Pourcentage d'inertie expliquée par chaque axe
 pdf("./images/ex2/fct_spam_batons_valeurs_propres.pdf")
-drawScreePlot(res$sdev, "Pourcentage d'inertie expliqué par chaque axe (Spam)")
+drawScreePlot(res$sdev, "Pourcentage d'inertie expliquée par chaque axe (Spam)")
 dev.off()
 
 pause()
 
 # Pourcentage d'inertie expliquée par les sous-espaces principaux
 pdf("./images/ex2/fct_spam_batons_valeurs_propres_cumm.pdf")
-drawCumulativeScreePlot(res$sdev, "Pourcentage d'inertie expliqué par les sous-espaces principaux (Spam)")
+drawCumulativeScreePlot(res$sdev, "Pourcentage d'inertie expliquée par les sous-espaces principaux")
 dev.off()
 
 pause()
@@ -113,8 +109,9 @@ for(j in 1:N){
 	Xtst <- donn.sep$Xtst;
 	ztst <- donn.sep$ztst;
 	
+	print('...'); # Test
+
 	# Parameters of the models
-	print('yo'); # Test
 	paramsAppAdq <- adq.app(Xapp, zapp);
 	paramsAppAdl <- adl.app(Xapp, zapp);
 	paramsAppNba <- nba.app(Xapp, zapp);
@@ -126,7 +123,9 @@ for(j in 1:N){
 	bestSize <- cvModel$size[which(cvModel$dev==min(cvModel$dev))];
 	binTree2 <- prune.misclass(binTree, best=bestSize[length(bestSize)]);
 
-	print('yo'); # Test
+	print('...'); # Test
+
+	# Predictions
 	predictionsAdq <- ad.val(paramsAppAdq, Xtst)$predictions;
 	predictionsAdl <- ad.val(paramsAppAdl, Xtst)$predictions;
 	predictionsNba <- ad.val(paramsAppNba, Xtst)$predictions;
@@ -135,7 +134,9 @@ for(j in 1:N){
 	predictionsQuadLog <- log.quad.val(paramsAppQuadLog$beta, Xtst)$predictions;
 	predictionsBinTree <- predict(binTree2, as.data.frame(Xtst), type = "class");
 
-	print('yo'); # Test
+	print('...'); # Test
+
+	# Computation of the error rates
 	adqErrorRatesTst[j] <- errorRate(predictionsAdq, ztst);
 	adlErrorRatesTst[j] <- errorRate(predictionsAdl, ztst);
 	nbaErrorRatesTst[j] <- errorRate(predictionsNba, ztst);
@@ -143,7 +144,8 @@ for(j in 1:N){
 	logWithInterceptErrorRatesTst[j] <- errorRate(predictionsLogWithIntercept, ztst);
 	quadLogErrorRatesTst[j] <- errorRate(predictionsQuadLog, ztst);
 	binTreeErrorRatesTst[j] <- errorRate(predictionsBinTree, ztst);
-	print('yo'); # Test
+
+	print('...'); # Test
 
 	if(j == 1){
 		imageName <- paste ("images/ex2/spam_bin_tree.pdf", sep="");
@@ -174,8 +176,3 @@ for(methodName in methods){
 	results[[methodName]] <- tmpList;
 }
 print(results);
-
-
-# -> Results
-# $log$estimatorErrorRateTst
-# [1] 0.08323549

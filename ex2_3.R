@@ -27,7 +27,6 @@ alphaDivBy2 <- alpha/2;
 oneMinusAlphaDivBy2 <- 1 - alphaDivBy2
 methods <- c("adq", "adl", "nba", "logWithoutIntercept", "logWithIntercept", "binTree");
 results <- list();
-i <- 1;
 N <- 100;
 iterator <- 0;
 errorRatesList <- NULL;
