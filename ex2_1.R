@@ -21,6 +21,9 @@ source('./fonctions-tp4/estimationOfMusAndSigmas.R');
 source('./fonctions-tp4/prob.ad.R');
 source('./fonctions-tp4/prob.log.R');
 source('./fonctions-tp4/prob.log2.R');
+source('./fonctions-tp4/prob.all.R');
+source('./fonctions-tp4/prob.discriminant.analysis.R');
+source('./fonctions-tp4/prob.logistic.regression.R');
 
 alpha <- 0.05;
 alphaDivBy2 <- alpha/2;
@@ -143,6 +146,48 @@ for(fileName in filesNames){
 			pdf(file = imageName);
 			plot(Xtst, col=c("darkorchid","firebrick","darkcyan","darkolivegreen","orange")[ztst])
 			partition.tree(binTree2, ordvars=c("V1","V2"), add=TRUE)			
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_all_models.pdf", sep="");
+			pdf(file = imageName);
+			prob.all(list(
+				paramsAppAdq, 
+				paramsAppAdl, 
+				paramsAppNba, 
+				paramsAppLogWithoutIntercept$beta, 
+				paramsAppLogWithIntercept$beta,
+				paramsAppQuadLog$beta
+				), 
+					Xtst, 
+					ztst, 
+					c(0.5)
+			);
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_discriminant_analysis_models.pdf", sep="");
+			pdf(file = imageName);
+			prob.discriminant.analysis(list(
+				paramsAppAdq, 
+				paramsAppAdl, 
+				paramsAppNba
+				), 
+					Xtst, 
+					ztst, 
+					c(0.5)
+			);
+			dev.off();
+
+			imageName <- paste ("images/ex2/synth_", i, "_logistic_regression_models.pdf", sep="");
+			pdf(file = imageName);
+			prob.logistic.regression(list(
+				paramsAppLogWithoutIntercept$beta, 
+				paramsAppLogWithIntercept$beta,
+				paramsAppQuadLog$beta
+				), 
+					Xtst, 
+					ztst, 
+					c(0.5)
+			);
 			dev.off();
 		}
 	}
